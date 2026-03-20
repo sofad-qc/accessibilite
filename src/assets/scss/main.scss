@@ -1,0 +1,48 @@
+@use 'bootstrap/scss/bootstrap';
+
+:root {
+  --note-bg: #1f2a44;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  font-size: 16px;
+}
+
+main {
+  max-width: 75ch;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-block: 1em 0.75em;
+}
+
+/* Copiage de code */
+.code-block {
+  position: relative;
+  margin: 2rem 0;
+
+  pre {
+    padding: 1rem;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    overflow-x: auto;
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 0.85em;
+  }
+}
