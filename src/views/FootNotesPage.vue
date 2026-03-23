@@ -59,34 +59,35 @@ onMounted(() => {
       5 février 1988 détient toujours des records d'audience télévisée américaine pour le catch avec
       une note Nielsen de 15,2 et 33 millions de téléspectateurs.
     </p>
-    <aside class="sofad-ndb" role="note">
-      <h2>Notes de bas de page</h2>
+
+    <aside class="sofad-ndb" role="note" aria-labelledby="nbp-title">
+      <h3 id="nbp-title" class="visually-hidden">Notes de bas de page</h3>
       <ol>
         <li>
-          <p id="ndp1" class="fn-ct-nb">
-            <span class="sr-only">Contenu de la note 1&nbsp;:</span>
-          </p>
-          <p>Terry Eugene Bollea est le nom civil de Hulk Hogan.</p>
-          <p class="fn-rtn">
-            <a href="#ndp1-rf">Retour à la lecture</a>
-          </p>
+          <section aria-labelledby="ndp1">
+            <h4 id="ndp1" class="fn-ct-nb">Note 1</h4>
+            <p>Terry Eugene Bollea est le nom civil de Hulk Hogan.</p>
+            <p class="fn-rtn">
+              <a href="#ndp1-rf">Retour à la lecture</a>
+            </p>
+          </section>
         </li>
 
         <li>
-          <p id="ndp2" class="fn-ct-nb">
-            <span class="sr-only">Contenu de la note 2&nbsp;:</span>
-          </p>
-          <p>
-            Hulk Hogan est considéré comme l’une des figures les plus populaires de l’histoire du
-            catch.
-          </p>
-          <p class="fn-rtn">
-            <a href="#ndp3-rf">Retour à la lecture</a>
-          </p>
+          <section aria-labelledby="ndp2">
+            <h4 id="ndp2" class="fn-ct-nb">Note 2</h4>
+            <p>
+              Hulk Hogan est considéré comme l’une des figures les plus populaires de l’histoire du
+              catch.
+            </p>
+            <p class="fn-rtn">
+              <a href="#ndp3-rf">Retour à la lecture</a>
+            </p>
+          </section>
         </li>
         <li>
           <section aria-labelledby="ndp3">
-            <h4 id="ndp3" class="fn-ct-nb">Note 3&nbsp;</h4>
+            <h4 id="ndp3" class="fn-ct-nb">Note 3</h4>
             <p>
               WrestleMania est un événement annuel de catch organisé fin mars ou début avril par la
               World Wrestling Entertainment (WWE) et précédemment connue sous le nom de World
@@ -100,14 +101,30 @@ onMounted(() => {
       </ol>
     </aside>
 
+    <h2>js</h2>
+    <div class="code-block">
+      <button type="button" class="copy-btn">Copier</button>
+
+      <pre>
+    <code class="language-js">
+// src/assets/js/footnotes.js
+    </code>
+  </pre>
+    </div>
+    <h2>scss</h2>
     <div class="code-block">
       <button type="button" class="copy-btn">Copier</button>
 
       <pre>
     <code class="language-scss">
-.sofad-ndb {
-  color: rgba(0, 0, 0, 0.75);
+
+:focus-visible {
+  outline: 3px solid #facc15;
+  outline-offset: 2px;
 }
+
+
+
     </code>
   </pre>
     </div>
@@ -130,10 +147,12 @@ onMounted(() => {
    =============================== */
 
 .sofad-ndb-link {
+  scroll-margin-top: 2rem;
   /* Typographie */
   font-size: 0.85em;
   font-weight: 600;
-  color: #ffffff;
+  line-height: 1;
+  vertical-align: baseline;
 
   /* Boîte pill */
   display: inline-flex;
@@ -143,9 +162,6 @@ onMounted(() => {
   height: 1.4em;
   min-width: 1.4em;
   padding: 0 0.4em;
-
-  line-height: 1;
-  vertical-align: baseline;
   margin-left: 0.1em;
 
   /* Apparence */
@@ -153,20 +169,21 @@ onMounted(() => {
   background-color: v.$note-bg;
   color: v.$note-text;
   text-decoration: none;
-  scroll-margin-top: 1.5rem;
-}
 
-/* Hover / focus utilisateur */
-.sofad-ndb-link:hover,
-.sofad-ndb-link:focus-visible {
-  background-color: v.$note-hover-bg;
-  color: #000000;
-}
+  /* Navigation */
 
-/* Focus logique / retour depuis la note */
-.sofad-ndb-link.sofad-ndb-focus {
-  outline: none; /* ✅ on enlève l’outline intrusif */
-  box-shadow: 0 0 0 2px rgba(31, 42, 68, 0.4); /* halo doux bleu */
+  /* Hover / focus utilisateur */
+  &:hover,
+  &:focus-visible {
+    background-color: v.$note-hover-bg;
+    color: #000000;
+  }
+
+  /* Focus logique / retour depuis la note */
+  &.sofad-ndb-focus {
+    outline: none; // ✅ on enlève l’outline intrusif
+    box-shadow: 0 0 0 2px rgba(31, 42, 68, 0.4); // halo doux bleu
+  }
 }
 
 /* ===============================
@@ -176,29 +193,35 @@ onMounted(() => {
 .sofad-ndb {
   margin-top: 3rem;
   padding-top: 1rem;
-  border-top: 1px solid #d1d5db;
 
   /* Texte légèrement atténué par défaut */
   color: rgba(0, 0, 0, 0.75);
-}
+  h3 {
+    font-size: 1.25em;
+  }
+  h4 {
+    font-size: 1em;
+  }
+  p {
+    font-size: 0.9em;
+  }
 
-.sofad-ndb ol {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
-.sofad-ndb li {
-  padding: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Note active */
-.sofad-ndb li:focus-within {
-  background-color: #f9fafb;
-  outline: 2px solid #1f2a44; /* même bleu que la pill */
-  outline-offset: 4px;
-  color: #000000; /* retour à 100 % */
+  li {
+    border-top: 1px solid rgb(209, 209, 209);
+    /* Note active (focus clavier / retour) */
+    &:focus-within {
+      background-color: #f9fafb;
+      outline: 2px solid #1f2a44; // même bleu que la pill
+      outline-offset: 4px;
+      color: #000000; // retour à 100 %
+    }
+  }
 }
 
 /* ===============================
@@ -206,7 +229,7 @@ onMounted(() => {
    =============================== */
 
 .fn-ct-nb {
-  scroll-margin-top: 2rem;
+  scroll-margin-top: 5rem;
 }
 
 .fn-rtn {

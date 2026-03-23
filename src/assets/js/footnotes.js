@@ -1,70 +1,83 @@
 // src/assets/js/footnotes.js
 
 export function initFootnotes() {
-  /* ===============================
-     Clic sur un appel de note
-     =============================== */
-  document.addEventListener('click', (event) => {
-    const refLink = event.target.closest('.sofad-ndb-link')
-    if (!refLink) return
+  document.addEventListener('click', onDocumentClick)
+  document.addEventListener('blur', onDocumentBlur, true)
+}
 
-    const refId = refLink.id
-    const note = document.querySelector(refLink.getAttribute('href'))
-    if (!note) return
+/* ===============================
+   Gestion centralisée des clics
+   =============================== */
+function onDocumentClick(event) {
+  const refLink = event.target.closest('.sofad-ndb-link')
+  if (refLink) {
+    handleRefClick(refLink)
+    return
+  }
 
-    const li = note.closest('li')
-    const returnLink = li.querySelector('.fn-rtn a')
+  const returnLink = event.target.closest('.fn-rtn a')
+  if (returnLink) {
+    handleReturnClick(returnLink)
+  }
+}
 
-    if (returnLink) {
-      returnLink.setAttribute('href', '#' + refId)
-    }
+/* ===============================
+   Clic sur appel de note
+   =============================== */
+function handleRefClick(refLink) {
+  const refId = refLink.id
+  if (!refId) return
 
-    if (!note.hasAttribute('tabindex')) {
-      note.setAttribute('tabindex', '-1')
-    }
+  const targetId = refLink.getAttribute('href')?.slice(1)
+  const note = targetId ? document.getElementById(targetId) : null
+  if (!note) return
 
-    setTimeout(() => note.focus(), 0)
-  })
+  const li = note.closest('li')
+  const returnLink = li?.querySelector('.fn-rtn a')
 
-  /* ===============================
-     Clic sur un lien de retour
-     =============================== */
-  document.addEventListener('click', (event) => {
-    const returnLink = event.target.closest('.fn-rtn a')
-    if (!returnLink) return
+  if (returnLink) {
+    returnLink.setAttribute('href', `#${refId}`)
+  }
 
-    const targetId = returnLink.getAttribute('href').substring(1)
-    const targetLink = document.getElementById(targetId)
-    if (!targetLink) return
+  focusElement(note)
+}
 
-    const sup = targetLink.closest('sup')
-    if (!sup) return
+/* ===============================
+   Clic sur lien de retour
+   =============================== */
+function handleReturnClick(returnLink) {
+  const targetId = returnLink.getAttribute('href')?.slice(1)
+  const targetLink = targetId ? document.getElementById(targetId) : null
+  if (!targetLink) return
 
-    sup.setAttribute('tabindex', '-1')
-    targetLink.classList.add('sofad-ndb-focus')
+  targetLink.classList.add('sofad-ndb-focus')
+  targetLink.dataset.monitorBlur = 'true'
 
-    setTimeout(() => targetLink.focus(), 0)
+  focusElement(targetLink)
+}
 
-    targetLink.dataset.monitorBlur = 'true'
-  })
+/* ===============================
+   Nettoyage après blur
+   =============================== */
+function onDocumentBlur(event) {
+  const link = event.target
 
-  /* ===============================
-     Nettoyage après blur
-     =============================== */
-  document.addEventListener(
-    'blur',
-    (event) => {
-      const link = event.target
-      if (!link.classList?.contains('sofad-ndb-link')) return
+  if (!link.classList?.contains('sofad-ndb-link') || link.dataset.monitorBlur !== 'true') {
+    return
+  }
 
-      if (link.dataset.monitorBlur === 'true') {
-        const sup = link.closest('sup')
-        if (sup) sup.removeAttribute('tabindex')
+  link.classList.remove('sofad-ndb-focus')
+  delete link.dataset.monitorBlur
+}
 
-        link.classList.remove('sofad-ndb-focus')
-        delete link.dataset.monitorBlur
-      }
-    },
-    true,
-  )
+/* ===============================
+   Utilitaire focus accessible
+   =============================== */
+function focusElement(el) {
+  if (!el.hasAttribute('tabindex')) {
+    el.setAttribute('tabindex', '-1')
+  }
+
+  // requestAnimationFrame est plus propre que setTimeout(0)
+  requestAnimationFrame(() => el.focus())
 }
