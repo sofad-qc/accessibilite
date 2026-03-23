@@ -16,6 +16,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.8",
     "highlight.js": "^11.11.1",
+    "prismjs": "^1.30.0",
     "vue": "^3.5.29",
     "vue-router": "^5.0.3"
   },
