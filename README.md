@@ -1,4 +1,4 @@
-# accessibilite
+# Intégration et accessibilité
 
 Ressources et exemples d'éléments accessibles.
 
